@@ -14,7 +14,6 @@ use SAML2\Exception\UnparseableXmlException;
 use SimpleSAML\Configuration;
 use SimpleSAML\Utils\Config;
 use SimpleSAML\Utils\Crypto;
-use SimpleSAML\Utils;
 //use SoapClient as BuiltinSoapClient;
 use SOAP_1_1;
 
@@ -59,7 +58,7 @@ class SOAPClient
         if ($srcMetadata->hasValue('saml.SOAPClient.certificate')) {
             $cert = $srcMetadata->getValue('saml.SOAPClient.certificate');
             if ($cert !== false) {
-                $configUtils = new Utils\Config();
+                $configUtils = new Config();
                 $ctxOpts['ssl']['local_cert'] = $configUtils->getCertPath(
                     $srcMetadata->getString('saml.SOAPClient.certificate')
                 );
@@ -69,7 +68,7 @@ class SOAPClient
             }
         } else {
             /* Use the SP certificate and privatekey if it is configured. */
-            $cryptoUtils = new Utils\Crypto();
+            $cryptoUtils = new Crypto();
             $privateKey = $cryptoUtils->loadPrivateKey($srcMetadata);
             $publicKey = $cryptoUtils->loadPublicKey($srcMetadata);
             if ($privateKey !== null && $publicKey !== null && isset($publicKey['PEM'])) {
